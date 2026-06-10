@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NyayBot - Legal Document Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f1117;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #4fc3f7;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: #888;
+            margin-bottom: 32px;
+        }
+
+        .upload-box {
+            border: 2px dashed #333;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            margin-bottom: 24px;
+        }
+
+        .upload-box:hover {
+            border-color: #4fc3f7;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            background: #4fc3f7;
+            color: #000;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .steps {
+            margin-top: 32px;
+        }
+
+        .step {
+            background: #1a1d27;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #4fc3f7;
+        }
+
+        .step h3 {
+            color: #4fc3f7;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .step p {
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .error {
+            background: #2d1a1a;
+            border-left: 4px solid #ef5350;
+            border-radius: 10px;
+            padding: 20px;
+            color: #ef5350;
+        }
+
+        .confidence { margin-bottom: 10px; font-size: 0.8rem; color: #888; }
+        .confidence span { color: #4fc3f7; font-weight: bold; }
+        .bar { background: #333; border-radius: 4px; height: 4px; margin-top: 4px; }
+        .fill { background: #4fc3f7; height: 4px; border-radius: 4px; transition: width 0.3s; }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>⚖️ NyayBot</h1>
+        <p class="subtitle">Upload any government or legal document — get instant analysis, rights, and action plan.</p>
+
+        <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+            <p id="uploadText">📄 Click to upload PDF</p>
+        </div>
+        <input type="file" id="fileInput" accept=".pdf" onchange="handleFile(event)">
+        <button class="btn" id="analyzeBtn" onclick="analyze()" disabled>Analyze Document</button>
+
+        <div id="output" class="steps"></div>
+    </div>
+
+    <script>
+        let selectedFile = null;
+
+        function handleFile(e) {
+            selectedFile = e.target.files[0];
+            document.getElementById('uploadText').textContent = '✅ ' + selectedFile.name;
+            document.getElementById('analyzeBtn').disabled = false;
+        }
+
+        const stepLabels = {
+            '1_classify': 'Step 1: Document Classification',
+            '2_extract': 'Step 2: Key Facts Extracted',
+            '3_reason': 'Step 3: Legal Reasoning',
+            '4_plan': 'Step 4: Action Plan',
+            '5_draft': 'Step 5: Response Letter'
+        };
+
+        async function analyze() {
+            if (!selectedFile) return;
+            const btn = document.getElementById('analyzeBtn');
+            const output = document.getElementById('output');
+            btn.disabled = true;
+            output.innerHTML = '<div class="loading">🔄 Analyzing document... this may take 30-60 seconds</div>';
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            try {
+                const res = await fetch('/analyze', { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (data.error) {
+                    output.innerHTML = `<div class="error">❌ ${data.error}</div>`;
+                    return;
+                }
+
+                output.innerHTML = '';
+                for (const step of data.steps) {
+                    const confidenceBar = step.confidence ? 
+                        `<div class="confidence">Confidence: <span>${step.confidence}%</span>
+                         <div class="bar"><div class="fill" style="width:${step.confidence}%"></div></div></div>` : '';
+                    output.innerHTML += `
+                        <div class="step">
+                            <h3>${step.title}</h3>
+                            ${confidenceBar}
+                            <p>${step.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                        </div>`;
+                }
+            } catch (err) {
+                output.innerHTML = `<div class="error">❌ Server error: ${err.message}</div>`;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
