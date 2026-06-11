@@ -431,26 +431,146 @@ input[type="file"] { display: none; }
 
 /* ── Footer ── */
 .footer {
-  margin-top: 60px;
-  padding-top: 24px;
+  margin-top: 80px;
+  padding-top: 60px;
   border-top: 1px solid var(--border);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 2fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.footer-col h3 {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.footer-col .col-subtitle {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.footer-col p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+.tech-stack-list {
+  list-style: none;
+  padding: 0;
+}
+
+.tech-stack-list li {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
   gap: 8px;
 }
 
-.footer p {
-  font-size: 0.78rem;
+.tech-stack-list li::before {
+  content: '•';
+  color: var(--amber);
+  font-size: 1.1rem;
+}
+
+.contact-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+}
+
+.contact-text strong {
+  color: var(--text);
+}
+
+.contact-text em {
+  font-family: 'Lora', Georgia, serif;
+  color: var(--amber);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.linkedin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 260px;
+  background: #0066cc;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 12px 16px;
+  border-radius: 2px;
+  margin-top: 18px;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.linkedin-btn:hover {
+  opacity: 0.9;
+}
+
+.linkedin-btn:active {
+  transform: scale(0.98);
+}
+
+.linkedin-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.linkedin-btn svg {
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding: 20px 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-bottom p {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
   color: var(--muted);
+  text-transform: uppercase;
 }
 
 .iq-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--muted);
   padding: 4px 10px;
   border: 1px solid var(--border2);
@@ -541,12 +661,48 @@ input[type="file"] { display: none; }
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-left">
-      <p>Built by <strong>Akash Thakrele</strong> · B.Tech CSE, BIST Bhopal</p>
-      <p style="margin-top:4px; font-size:0.75rem;">Microsoft Agents League @ AI Skills Fest 2026</p>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>About</h3>
+        <div class="col-subtitle">NYAYBOT LEGAL ENGINE V1.0</div>
+        <p>An AI-powered legal reasoning engine for Indian citizens to clarify complex government notices, verify land records, analyze tenancy agreements, and simplify RTI filings.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Tech Stack</h3>
+        <ul class="tech-stack-list">
+          <li>FASTAPI</li>
+          <li>LANGGRAPH</li>
+          <li>GPT-4O</li>
+          <li>PYMUPDF</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <div class="contact-text">
+          <p>Built by <strong>Akash Thakrele</strong></p>
+          <p>B.Tech CSE, BIST Bhopal</p>
+          <p style="margin-top: 4px;"><em>1x Hackathon Winner</em></p>
+        </div>
+        <a href="https://www.linkedin.com/in/akashthakrele/" target="_blank" class="linkedin-btn">
+          <span class="linkedin-btn-left">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+            CONNECT ON LINKEDIN
+          </span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
     </div>
-    <div class="footer-right">
-      <span class="iq-badge"><span class="iq-dot"></span>Foundry IQ · Azure AI</span>
+    <div class="footer-bottom">
+      <p>© 2026 NYAYBOT ARCHIVES</p>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span class="iq-badge"><span class="iq-dot"></span>Foundry IQ · Azure AI</span>
+        <p>DESIGNED FOR IMPACT</p>
+      </div>
     </div>
   </footer>
 
