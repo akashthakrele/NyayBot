@@ -1,0 +1,1 @@
+# app/exceptions package

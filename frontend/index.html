@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NyayBot — AI-powered Indian legal document analyser and RTI assistant">
+    <title>NyayBot - Legal Document Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f1117;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #4fc3f7;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: #888;
+            margin-bottom: 32px;
+        }
+
+        /* ── Tabs ─────────────────────────────────────── */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: #1a1d27;
+            border: 2px solid #333;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #888;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            border-color: #4fc3f7;
+            color: #ccc;
+        }
+
+        .tab.active {
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+            background: #141720;
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        /* ── Upload ───────────────────────────────────── */
+        .upload-box {
+            border: 2px dashed #333;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            margin-bottom: 24px;
+        }
+
+        .upload-box:hover {
+            border-color: #4fc3f7;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* ── RTI textarea ─────────────────────────────── */
+        .rti-input {
+            width: 100%;
+            min-height: 120px;
+            background: #1a1d27;
+            color: #e0e0e0;
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            margin-bottom: 24px;
+            transition: border-color 0.2s;
+        }
+
+        .rti-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        /* ── Buttons ──────────────────────────────────── */
+        .btn {
+            background: #4fc3f7;
+            color: #000;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        /* ── Steps output ─────────────────────────────── */
+        .steps {
+            margin-top: 32px;
+        }
+
+        .step {
+            background: #1a1d27;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #4fc3f7;
+        }
+
+        .step h3 {
+            color: #4fc3f7;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .step p {
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .error {
+            background: #2d1a1a;
+            border-left: 4px solid #ef5350;
+            border-radius: 10px;
+            padding: 20px;
+            color: #ef5350;
+        }
+
+        .confidence { margin-bottom: 10px; font-size: 0.8rem; color: #888; }
+        .confidence span { color: #4fc3f7; font-weight: bold; }
+        .bar { background: #333; border-radius: 4px; height: 4px; margin-top: 4px; }
+        .fill { background: #4fc3f7; height: 4px; border-radius: 4px; transition: width 0.3s; }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>⚖️ NyayBot</h1>
+        <p class="subtitle">Upload any government or legal document — or describe your problem for RTI guidance.</p>
+
+        <!-- Tab switcher -->
+        <div class="tabs">
+            <div class="tab active" id="tabDoc" onclick="switchTab('doc')">📄 Document Analysis</div>
+            <div class="tab" id="tabRti" onclick="switchTab('rti')">📝 RTI Assistant</div>
+        </div>
+
+        <!-- Document Analysis Panel -->
+        <div class="panel active" id="panelDoc">
+            <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+                <p id="uploadText">📄 Click to upload PDF</p>
+            </div>
+            <input type="file" id="fileInput" accept=".pdf" onchange="handleFile(event)">
+            <button class="btn" id="analyzeBtn" onclick="analyze()" disabled>Analyze Document</button>
+            <div id="docOutput" class="steps"></div>
+        </div>
+
+        <!-- RTI Assistant Panel -->
+        <div class="panel" id="panelRti">
+            <textarea class="rti-input" id="rtiProblem" placeholder="Describe your problem or grievance here...&#10;&#10;Example: I want to know how much money was spent by my local municipality on road construction in 2024-25."></textarea>
+            <button class="btn" id="rtiBtn" onclick="analyzeRti()">Analyze RTI Options</button>
+            <div id="rtiOutput" class="steps"></div>
+        </div>
+    </div>
+
+    <script>
+        /* ── Tab switching ──────────────────────────────── */
+        function switchTab(tab) {
+            document.getElementById('tabDoc').classList.toggle('active', tab === 'doc');
+            document.getElementById('tabRti').classList.toggle('active', tab === 'rti');
+            document.getElementById('panelDoc').classList.toggle('active', tab === 'doc');
+            document.getElementById('panelRti').classList.toggle('active', tab === 'rti');
+        }
+
+        /* ── Shared step renderer ───────────────────────── */
+        function renderSteps(steps, container) {
+            container.innerHTML = '';
+            for (const step of steps) {
+                const confidenceBar = step.confidence ?
+                    `<div class="confidence">Confidence: <span>${step.confidence}%</span>
+                     <div class="bar"><div class="fill" style="width:${step.confidence}%"></div></div></div>` : '';
+                container.innerHTML += `
+                    <div class="step">
+                        <h3>${step.title}</h3>
+                        ${confidenceBar}
+                        <p>${step.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                    </div>`;
+            }
+        }
+
+        /* ── Document Analysis ──────────────────────────── */
+        let selectedFile = null;
+
+        function handleFile(e) {
+            selectedFile = e.target.files[0];
+            document.getElementById('uploadText').textContent = '✅ ' + selectedFile.name;
+            document.getElementById('analyzeBtn').disabled = false;
+        }
+
+        async function analyze() {
+            if (!selectedFile) return;
+            const btn = document.getElementById('analyzeBtn');
+            const output = document.getElementById('docOutput');
+            btn.disabled = true;
+            output.innerHTML = '<div class="loading">🔄 Analyzing document... this may take 30-60 seconds</div>';
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            try {
+                const res = await fetch('/api/v1/analyze', { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (data.error) {
+                    output.innerHTML = `<div class="error">❌ ${data.error}</div>`;
+                    return;
+                }
+
+                renderSteps(data.steps, output);
+            } catch (err) {
+                output.innerHTML = `<div class="error">❌ Server error: ${err.message}</div>`;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        /* ── RTI Analysis ───────────────────────────────── */
+        async function analyzeRti() {
+            const problem = document.getElementById('rtiProblem').value.trim();
+            if (!problem) return;
+            const btn = document.getElementById('rtiBtn');
+            const output = document.getElementById('rtiOutput');
+            btn.disabled = true;
+            output.innerHTML = '<div class="loading">🔄 Analyzing RTI options... this may take 30-60 seconds</div>';
+
+            try {
+                const res = await fetch('/api/v1/rti', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ problem: problem })
+                });
+                const data = await res.json();
+
+                if (data.error) {
+                    output.innerHTML = `<div class="error">❌ ${data.error}</div>`;
+                    return;
+                }
+
+                renderSteps(data.steps, output);
+            } catch (err) {
+                output.innerHTML = `<div class="error">❌ Server error: ${err.message}</div>`;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
