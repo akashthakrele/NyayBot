@@ -1,283 +1,709 @@
-Here’s your fully customized single-file Valentine webpage.
-Copy → paste into a `.html` file → open in any browser.
-
----
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Tanuja 💖</title>
-
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
-
+<title>NyayBot — Legal Document Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:        #0D1117;
+  --surface:   #161B22;
+  --surface2:  #1C2330;
+  --border:    rgba(255,255,255,0.08);
+  --border2:   rgba(255,255,255,0.14);
+  --text:      rgba(255,255,255,0.90);
+  --muted:     rgba(255,255,255,0.45);
+  --amber:     #E6A817;
+  --amber-dim: rgba(230,168,23,0.12);
+  --amber-dk:  #B8841A;
+  --sage:      #4CAF7D;
+  --sage-dim:  rgba(76,175,125,0.12);
+  --red:       #E05252;
+  --red-dim:   rgba(224,82,82,0.10);
+  --radius:    10px;
 }
 
-body{
-height:100vh;
-overflow:hidden;
-background:linear-gradient(135deg,#ffd6e8,#ff4f81);
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-color:#fff;
-position:relative;
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 48px 20px 80px;
+  line-height: 1.6;
 }
 
-.container{
-z-index:2;
-padding:20px;
-max-width:650px;
-width:90%;
+.container { max-width: 740px; margin: 0 auto; }
+
+/* ── Header ── */
+.header { margin-bottom: 40px; }
+
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
 }
 
-.bear{
-font-size:75px;
-animation:bounce 1.6s infinite;
+.wordmark-scale {
+  width: 28px;
+  height: 28px;
+  opacity: 0.9;
 }
 
-@keyframes bounce{
-0%,100%{transform:translateY(0);}
-50%{transform:translateY(-18px);}
+.wordmark h1 {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
 }
 
-h1{
-font-family:'Dancing Script',cursive;
-font-size:52px;
-margin:15px 0;
+.wordmark .tagline-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--amber);
+  border-radius: 50%;
+  margin-bottom: 3px;
+  flex-shrink: 0;
 }
 
-.subtitle{
-font-style:italic;
-margin-bottom:18px;
-font-size:18px;
+.header p {
+  color: var(--muted);
+  font-size: 0.925rem;
+  max-width: 480px;
+  line-height: 1.55;
 }
 
-.closing{
-margin-top:10px;
-font-size:16px;
+/* ── Tabs ── */
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3px;
+  margin-bottom: 24px;
 }
 
-.buttons{
-margin-top:30px;
-display:flex;
-justify-content:center;
-gap:40px;
-flex-wrap:wrap;
+.tab {
+  padding: 9px 16px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
 }
 
-#yesBtn{
-background:linear-gradient(45deg,#ff1744,#ff5252);
-border:none;
-padding:15px 45px;
-font-size:20px;
-border-radius:50px;
-color:white;
-cursor:pointer;
-transition:0.3s;
-box-shadow:0 0 15px rgba(255,0,70,0.7);
+.tab:hover { color: var(--text); }
+
+.tab.active {
+  background: var(--surface2);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
-#yesBtn:hover{
-transform:scale(1.12);
-box-shadow:0 0 30px rgba(255,0,70,1);
+.tab svg { opacity: 0.7; flex-shrink: 0; }
+.tab.active svg { opacity: 1; }
+
+/* ── Panel ── */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── Upload zone ── */
+.upload-zone {
+  border: 1.5px dashed var(--border2);
+  border-radius: var(--radius);
+  padding: 36px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 16px;
+  background: var(--surface);
 }
 
-#noBtn{
-background:white;
-color:#ff1744;
-border:2px solid #ff1744;
-padding:10px 28px;
-font-size:16px;
-border-radius:40px;
-cursor:pointer;
-position:relative;
-transition:0.2s;
+.upload-zone:hover {
+  border-color: var(--amber);
+  background: var(--amber-dim);
 }
 
-.floating-heart{
-position:fixed;
-bottom:-50px;
-animation:floatUp linear infinite;
-pointer-events:none;
-opacity:0;
+.upload-zone.has-file {
+  border-color: var(--sage);
+  border-style: solid;
+  background: var(--sage-dim);
 }
 
-@keyframes floatUp{
-0%{transform:translateY(0) scale(1);opacity:0;}
-10%{opacity:1;}
-90%{opacity:1;}
-100%{transform:translateY(-110vh) scale(1.3);opacity:0;}
+.upload-icon {
+  margin-bottom: 10px;
+  opacity: 0.5;
 }
 
-.celebration{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(135deg,#ff4f81,#ff1744);
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-z-index:10;
-display:none;
-text-align:center;
-padding:20px;
+.upload-zone.has-file .upload-icon { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+
+.upload-label {
+  font-size: 0.9rem;
+  color: var(--muted);
 }
 
-.celebration h2{
-font-size:65px;
-animation:pulse 1s infinite;
+.upload-zone.has-file .upload-label {
+  color: var(--sage);
+  font-weight: 500;
+  font-size: 0.925rem;
 }
 
-@keyframes pulse{
-0%,100%{transform:scale(1);}
-50%{transform:scale(1.25);}
+input[type="file"] { display: none; }
+
+/* ── Textarea ── */
+.rti-textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.925rem;
+  resize: vertical;
+  min-height: 120px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+  line-height: 1.6;
 }
 
-.spin{
-font-size:70px;
-animation:spin 2s linear infinite;
+.rti-textarea:focus {
+  outline: none;
+  border-color: var(--amber);
 }
 
-@keyframes spin{
-100%{transform:rotate(360deg);}
+.rti-textarea::placeholder { color: var(--muted); }
+
+/* ── Primary button ── */
+.btn-primary {
+  width: 100%;
+  padding: 13px 24px;
+  background: var(--amber);
+  color: #0D1117;
+  border: none;
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 0.925rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  letter-spacing: 0.01em;
 }
 
-.confetti{
-position:fixed;
-width:10px;
-height:10px;
-top:-10px;
-animation:fall linear forwards;
+.btn-primary:hover:not(:disabled) {
+  background: #F0B52A;
 }
 
-@keyframes fall{
-to{transform:translateY(110vh) rotate(720deg);}
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.btn-primary:disabled {
+  background: var(--surface2);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+/* ── Loading ── */
+.loading-state {
+  padding: 48px 0;
+  text-align: center;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 2.5px solid var(--border2);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-state p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.loading-state .loading-sub {
+  font-size: 0.8rem;
+  margin-top: 4px;
+  opacity: 0.6;
+}
+
+/* ── Results ── */
+.results { margin-top: 32px; }
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.results-header h2 {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.results-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ── Step card ── */
+.step-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.step-card:hover { border-color: var(--border2); }
+
+.step-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 20px 14px;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.step-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.step-number {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--amber);
+  opacity: 0.35;
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 28px;
+  padding-top: 1px;
+}
+
+.step-card.retry-card .step-number { color: var(--muted); font-size: 1rem; }
+
+.step-meta { min-width: 0; }
+
+.step-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.step-confidence {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.step-confidence.high  { background: var(--sage-dim);  color: var(--sage); }
+.step-confidence.mid   { background: var(--amber-dim); color: var(--amber); }
+.step-confidence.low   { background: var(--red-dim);   color: var(--red); }
+
+.step-confidence::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.step-toggle {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  transition: transform 0.2s;
+  padding-top: 2px;
+}
+
+.step-card.expanded .step-toggle { transform: rotate(180deg); }
+
+/* ── Step body ── */
+.step-body {
+  display: none;
+  padding: 0 20px 20px 62px;
+  border-top: 1px solid var(--border);
+}
+
+.step-card.expanded .step-body { display: block; padding-top: 16px; }
+
+.step-content {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.80);
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
+.step-content strong { color: var(--text); font-weight: 600; }
+
+.step-content h3, .step-content h4 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 18px 0 8px;
+}
+
+.step-content ul, .step-content ol {
+  padding-left: 18px;
+  margin: 8px 0;
+}
+
+.step-content li { margin-bottom: 4px; }
+
+/* Copy button on draft step */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 14px;
+  padding: 7px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.copy-btn:hover { color: var(--text); border-color: var(--amber); }
+.copy-btn.copied { color: var(--sage); border-color: var(--sage); }
+
+/* ── Error ── */
+.error-card {
+  background: var(--red-dim);
+  border: 1px solid rgba(224,82,82,0.25);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  color: var(--red);
+  font-size: 0.9rem;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 32px 0;
+}
+
+/* ── Footer ── */
+.footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer p {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.iq-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 4px 10px;
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+}
+
+.iq-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--amber);
+  border-radius: 50%;
 }
 </style>
 </head>
-
 <body>
+<div class="container">
 
-<div class="container" id="mainContent">
-<div class="bear">🐻</div>
-<h1>Will You Be My Valentine, Tanuja?</h1>
-<div class="subtitle">Valentine’s Day is cute… but loving you daily is my real full-time job...</div>
-<div class="closing">Every love story is beautiful, but ours is my favorite</div>
+  <!-- Header -->
+  <header class="header">
+    <div class="wordmark">
+      <svg class="wordmark-scale" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="13" width="26" height="2.5" rx="1.25" fill="#E6A817" opacity="0.9"/>
+        <rect x="5" y="15.5" width="2" height="10" rx="1" fill="#E6A817" opacity="0.6"/>
+        <rect x="21" y="15.5" width="2" height="10" rx="1" fill="#E6A817" opacity="0.6"/>
+        <circle cx="14" cy="7" r="4" stroke="#E6A817" stroke-width="1.5" fill="none" opacity="0.85"/>
+        <line x1="14" y1="11" x2="14" y2="13" stroke="#E6A817" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+      </svg>
+      <h1>NyayBot</h1>
+      <span class="tagline-dot"></span>
+    </div>
+    <p>Upload any government or legal document — or describe your problem for RTI guidance.</p>
+  </header>
 
-<div class="buttons">
-<button id="yesBtn">Yes 💖</button>
-<button id="noBtn">No</button>
-</div>
-</div>
+  <!-- Tabs -->
+  <div class="tabs" role="tablist">
+    <button class="tab active" role="tab" onclick="switchTab('doc', this)">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="1" width="10" height="13" rx="1.5"/>
+        <line x1="5" y1="5" x2="9" y2="5"/>
+        <line x1="5" y1="8" x2="9" y2="8"/>
+        <line x1="5" y1="11" x2="7.5" y2="11"/>
+      </svg>
+      Document Analysis
+    </button>
+    <button class="tab" role="tab" onclick="switchTab('rti', this)">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="8" cy="8" r="6.5"/>
+        <line x1="8" y1="5" x2="8" y2="8.5"/>
+        <circle cx="8" cy="11" r="0.6" fill="currentColor" stroke="none"/>
+      </svg>
+      RTI Assistant
+    </button>
+  </div>
 
-<div class="celebration" id="celebration">
-<h2>Yayyyy!!</h2>
-<div class="spin">💘</div>
-<p style="margin-top:20px;font-size:22px;">
-Careful… I take this boyfriend job very seriously....
-</p>
+  <!-- Document Analysis Panel -->
+  <div class="panel active" id="panel-doc">
+    <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5">
+          <rect x="4" y="3" width="18" height="24" rx="2"/>
+          <line x1="9" y1="10" x2="17" y2="10"/>
+          <line x1="9" y1="14" x2="17" y2="14"/>
+          <line x1="9" y1="18" x2="13" y2="18"/>
+          <polyline points="20 20 20 29 29 29 29 20"/>
+          <polyline points="24 16 24 20 20 20"/>
+          <line x1="24" y1="16" x2="24" y2="20"/>
+          <polyline points="21 19 24 16 27 19"/>
+        </svg>
+      </div>
+      <p class="upload-label" id="uploadText">Click to upload a PDF document</p>
+    </div>
+    <input type="file" id="fileInput" accept=".pdf" onchange="handleFile(event)">
+    <button class="btn-primary" id="analyzeBtn" onclick="analyzeDoc()" disabled>Analyze Document</button>
+    <div id="docOutput"></div>
+  </div>
+
+  <!-- RTI Panel -->
+  <div class="panel" id="panel-rti">
+    <textarea
+      class="rti-textarea"
+      id="rtiInput"
+      placeholder="Describe your situation in plain language. For example: 'My ration card application was rejected 3 months ago and I haven't received any written explanation from the district office...'"
+      oninput="document.getElementById('rtiBtn').disabled = !this.value.trim()"
+    ></textarea>
+    <button class="btn-primary" id="rtiBtn" onclick="analyzeRTI()" disabled>Check RTI Options</button>
+    <div id="rtiOutput"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built for Microsoft Agents League @ AI Skills Fest 2026</p>
+    <span class="iq-badge"><span class="iq-dot"></span>Foundry IQ · Azure AI</span>
+  </footer>
+
 </div>
 
 <script>
-const yesBtn=document.getElementById("yesBtn");
-const noBtn=document.getElementById("noBtn");
-const celebration=document.getElementById("celebration");
-const mainContent=document.getElementById("mainContent");
-
-const messages=[
-"Nope, not an option!",
-"Try again!",
-"You sure about that?",
-"Not happening!",
-"Think again!"
-];
-
-let msgIndex=0;
-
-function moveNoButton(){
-const yesRect=yesBtn.getBoundingClientRect();
-let x,y;
-const padding=120;
-
-do{
-x=Math.random()*(window.innerWidth-120);
-y=Math.random()*(window.innerHeight-60);
-}while(
-x>yesRect.left-padding &&
-x<yesRect.right+padding &&
-y>yesRect.top-padding &&
-y<yesRect.bottom+padding
-);
-
-noBtn.style.position="fixed";
-noBtn.style.left=x+"px";
-noBtn.style.top=y+"px";
-
-noBtn.textContent=messages[msgIndex];
-msgIndex=(msgIndex+1)%messages.length;
+// ── Tab switching ──
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
 }
 
-noBtn.addEventListener("click",moveNoButton);
-noBtn.addEventListener("mouseover",moveNoButton);
-noBtn.addEventListener("touchstart",moveNoButton);
+// ── File handling ──
+let selectedFile = null;
 
-yesBtn.addEventListener("click",()=>{
-mainContent.style.display="none";
-stopHearts();
-celebration.style.display="flex";
-createConfetti();
-});
-
-function createHeart(){
-const heart=document.createElement("div");
-heart.className="floating-heart";
-heart.innerHTML="💖";
-heart.style.left=Math.random()*100+"vw";
-heart.style.fontSize=(Math.random()*25+15)+"px";
-heart.style.animationDuration=(Math.random()*5+5)+"s";
-document.body.appendChild(heart);
-setTimeout(()=>heart.remove(),10000);
+function handleFile(e) {
+  selectedFile = e.target.files[0];
+  if (!selectedFile) return;
+  const zone = document.getElementById('dropZone');
+  zone.classList.add('has-file');
+  document.getElementById('uploadText').textContent = selectedFile.name;
+  document.getElementById('analyzeBtn').disabled = false;
 }
 
-let heartInterval=setInterval(()=>{
-if(document.querySelectorAll(".floating-heart").length<15){
-createHeart();
-}
-},400);
-
-function stopHearts(){
-clearInterval(heartInterval);
-document.querySelectorAll(".floating-heart").forEach(h=>h.remove());
+// ── Confidence badge ──
+function confidenceBadge(score) {
+  if (!score) return '';
+  const cls = score >= 80 ? 'high' : score >= 60 ? 'mid' : 'low';
+  return `<span class="step-confidence ${cls}">${score}% confidence</span>`;
 }
 
-function createConfetti(){
-for(let i=0;i<120;i++){
-const conf=document.createElement("div");
-conf.className="confetti";
-conf.style.left=Math.random()*100+"vw";
-conf.style.backgroundColor=`hsl(${Math.random()*360},100%,50%)`;
-conf.style.animationDuration=(Math.random()*3+2)+"s";
-conf.style.width=conf.style.height=(Math.random()*8+4)+"px";
-document.body.appendChild(conf);
-setTimeout(()=>conf.remove(),5000);
+// ── Strip markdown artifacts ──
+function cleanContent(text) {
+  return text
+    .replace(/^#{1,4}\s+/gm, '')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^[-•]\s+/gm, '• ')
+    .replace(/\n/g, '<br>');
 }
+
+// ── Render steps ──
+function renderSteps(steps, container) {
+  container.innerHTML = '';
+
+  const header = document.createElement('div');
+  header.className = 'results-header';
+  header.innerHTML = `<h2>Analysis complete</h2><span class="results-meta">${steps.length} steps</span>`;
+  container.appendChild(header);
+
+  const stepNumbers = ['01','02','03','04','05'];
+  let stepIdx = 0;
+
+  steps.forEach((step, i) => {
+    const isRetry = step.step && step.step.includes('retry');
+    const isDraft = step.step && (step.step.includes('draft') || step.step.includes('5_'));
+    const card = document.createElement('div');
+    card.className = 'step-card' + (isRetry ? ' retry-card' : '') + (i === 0 ? ' expanded' : '');
+
+    const num = isRetry ? '↻' : (stepNumbers[stepIdx] || '—');
+    if (!isRetry) stepIdx++;
+
+    card.innerHTML = `
+      <div class="step-header" onclick="toggleStep(this.parentElement)">
+        <div class="step-left">
+          <span class="step-number">${num}</span>
+          <div class="step-meta">
+            <div class="step-title">${step.title}</div>
+            ${confidenceBadge(step.confidence)}
+          </div>
+        </div>
+        <span class="step-toggle">▾</span>
+      </div>
+      <div class="step-body">
+        <div class="step-content">${cleanContent(step.content)}</div>
+        ${isDraft ? `<button class="copy-btn" onclick="copyDraft(this, \`${step.content.replace(/`/g,'\\`')}\`)">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg>
+          Copy letter
+        </button>` : ''}
+      </div>`;
+
+    container.appendChild(card);
+  });
+}
+
+function toggleStep(card) {
+  card.classList.toggle('expanded');
+}
+
+function copyDraft(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.textContent = '✓ Copied';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg> Copy letter`;
+    }, 2000);
+  });
+}
+
+// ── Loading state ──
+function showLoading(container, msg, sub) {
+  container.innerHTML = `
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>${msg}</p>
+      ${sub ? `<p class="loading-sub">${sub}</p>` : ''}
+    </div>`;
+}
+
+// ── Analyze document ──
+async function analyzeDoc() {
+  if (!selectedFile) return;
+  const btn = document.getElementById('analyzeBtn');
+  const output = document.getElementById('docOutput');
+  btn.disabled = true;
+  showLoading(output, 'Analyzing document', 'This takes 30–60 seconds');
+  const form = new FormData();
+  form.append('file', selectedFile);
+  try {
+    const res = await fetch('/api/v1/analyze', { method: 'POST', body: form });
+    const data = await res.json();
+    if (data.error || data.detail) {
+      output.innerHTML = `<div class="error-card">${data.error || data.detail}</div>`;
+      return;
+    }
+    renderSteps(data.steps || [], output);
+  } catch(err) {
+    output.innerHTML = `<div class="error-card">Connection error: ${err.message}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ── Analyze RTI ──
+async function analyzeRTI() {
+  const problem = document.getElementById('rtiInput').value.trim();
+  if (!problem) return;
+  const btn = document.getElementById('rtiBtn');
+  const output = document.getElementById('rtiOutput');
+  btn.disabled = true;
+  showLoading(output, 'Reasoning over RTI options', 'Checking applicable laws');
+  try {
+    const res = await fetch('/api/v1/rti', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ problem })
+    });
+    const data = await res.json();
+    if (data.error || data.detail) {
+      output.innerHTML = `<div class="error-card">${data.error || data.detail}</div>`;
+      return;
+    }
+    renderSteps(data.steps || [], output);
+  } catch(err) {
+    output.innerHTML = `<div class="error-card">Connection error: ${err.message}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
 }
 </script>
-
 </body>
 </html>
-```

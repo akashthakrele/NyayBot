@@ -603,10 +603,8 @@ function renderSteps(steps, container) {
     const card = document.createElement('div');
     card.className = 'step-card' + (isRetry ? ' retry-card' : '') + (i === 0 ? ' expanded' : '');
 
-    const num = isRetry ? '\u21bb' : (stepNumbers[stepIdx] || '\u2014');
+    const num = isRetry ? '↻' : (stepNumbers[stepIdx] || '—');
     if (!isRetry) stepIdx++;
-
-    const escapedContent = step.content.replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
     card.innerHTML = `
       <div class="step-header" onclick="toggleStep(this.parentElement)">
@@ -617,11 +615,11 @@ function renderSteps(steps, container) {
             ${confidenceBadge(step.confidence)}
           </div>
         </div>
-        <span class="step-toggle">\u25be</span>
+        <span class="step-toggle">▾</span>
       </div>
       <div class="step-body">
         <div class="step-content">${cleanContent(step.content)}</div>
-        ${isDraft ? `<button class="copy-btn" onclick="copyDraft(this)">
+        ${isDraft ? `<button class="copy-btn" onclick="copyDraft(this, \`${step.content.replace(/`/g,'\\`')}\`)">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg>
           Copy letter
         </button>` : ''}
@@ -635,11 +633,10 @@ function toggleStep(card) {
   card.classList.toggle('expanded');
 }
 
-function copyDraft(btn) {
-  const content = btn.closest('.step-body').querySelector('.step-content').innerText;
-  navigator.clipboard.writeText(content).then(() => {
+function copyDraft(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
     btn.classList.add('copied');
-    btn.textContent = '\u2713 Copied';
+    btn.textContent = '✓ Copied';
     setTimeout(() => {
       btn.classList.remove('copied');
       btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg> Copy letter`;
@@ -663,7 +660,7 @@ async function analyzeDoc() {
   const btn = document.getElementById('analyzeBtn');
   const output = document.getElementById('docOutput');
   btn.disabled = true;
-  showLoading(output, 'Analyzing document', 'This takes 30\u201360 seconds');
+  showLoading(output, 'Analyzing document', 'This takes 30–60 seconds');
   const form = new FormData();
   form.append('file', selectedFile);
   try {
