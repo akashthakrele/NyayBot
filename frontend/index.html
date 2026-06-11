@@ -1,308 +1,283 @@
+Here’s your fully customized single-file Valentine webpage.
+Copy → paste into a `.html` file → open in any browser.
+
+---
+
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NyayBot — AI-powered Indian legal document analyser and RTI assistant">
-    <title>NyayBot - Legal Document Analyzer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Tanuja 💖</title>
 
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f1117;
-            color: #e0e0e0;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
 
-        h1 {
-            color: #4fc3f7;
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
+body{
+height:100vh;
+overflow:hidden;
+background:linear-gradient(135deg,#ffd6e8,#ff4f81);
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:#fff;
+position:relative;
+}
 
-        p.subtitle {
-            color: #888;
-            margin-bottom: 32px;
-        }
+.container{
+z-index:2;
+padding:20px;
+max-width:650px;
+width:90%;
+}
 
-        /* ── Tabs ─────────────────────────────────────── */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
+.bear{
+font-size:75px;
+animation:bounce 1.6s infinite;
+}
 
-        .tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            background: #1a1d27;
-            border: 2px solid #333;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #888;
-            transition: all 0.2s;
-        }
+@keyframes bounce{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-18px);}
+}
 
-        .tab:hover {
-            border-color: #4fc3f7;
-            color: #ccc;
-        }
+h1{
+font-family:'Dancing Script',cursive;
+font-size:52px;
+margin:15px 0;
+}
 
-        .tab.active {
-            border-color: #4fc3f7;
-            color: #4fc3f7;
-            background: #141720;
-        }
+.subtitle{
+font-style:italic;
+margin-bottom:18px;
+font-size:18px;
+}
 
-        .panel {
-            display: none;
-        }
+.closing{
+margin-top:10px;
+font-size:16px;
+}
 
-        .panel.active {
-            display: block;
-        }
+.buttons{
+margin-top:30px;
+display:flex;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+}
 
-        /* ── Upload ───────────────────────────────────── */
-        .upload-box {
-            border: 2px dashed #333;
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.2s;
-            margin-bottom: 24px;
-        }
+#yesBtn{
+background:linear-gradient(45deg,#ff1744,#ff5252);
+border:none;
+padding:15px 45px;
+font-size:20px;
+border-radius:50px;
+color:white;
+cursor:pointer;
+transition:0.3s;
+box-shadow:0 0 15px rgba(255,0,70,0.7);
+}
 
-        .upload-box:hover {
-            border-color: #4fc3f7;
-        }
+#yesBtn:hover{
+transform:scale(1.12);
+box-shadow:0 0 30px rgba(255,0,70,1);
+}
 
-        input[type="file"] {
-            display: none;
-        }
+#noBtn{
+background:white;
+color:#ff1744;
+border:2px solid #ff1744;
+padding:10px 28px;
+font-size:16px;
+border-radius:40px;
+cursor:pointer;
+position:relative;
+transition:0.2s;
+}
 
-        /* ── RTI textarea ─────────────────────────────── */
-        .rti-input {
-            width: 100%;
-            min-height: 120px;
-            background: #1a1d27;
-            color: #e0e0e0;
-            border: 2px solid #333;
-            border-radius: 12px;
-            padding: 16px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            resize: vertical;
-            margin-bottom: 24px;
-            transition: border-color 0.2s;
-        }
+.floating-heart{
+position:fixed;
+bottom:-50px;
+animation:floatUp linear infinite;
+pointer-events:none;
+opacity:0;
+}
 
-        .rti-input:focus {
-            outline: none;
-            border-color: #4fc3f7;
-        }
+@keyframes floatUp{
+0%{transform:translateY(0) scale(1);opacity:0;}
+10%{opacity:1;}
+90%{opacity:1;}
+100%{transform:translateY(-110vh) scale(1.3);opacity:0;}
+}
 
-        /* ── Buttons ──────────────────────────────────── */
-        .btn {
-            background: #4fc3f7;
-            color: #000;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-        }
+.celebration{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(135deg,#ff4f81,#ff1744);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+z-index:10;
+display:none;
+text-align:center;
+padding:20px;
+}
 
-        .btn:disabled {
-            background: #333;
-            color: #666;
-            cursor: not-allowed;
-        }
+.celebration h2{
+font-size:65px;
+animation:pulse 1s infinite;
+}
 
-        /* ── Steps output ─────────────────────────────── */
-        .steps {
-            margin-top: 32px;
-        }
+@keyframes pulse{
+0%,100%{transform:scale(1);}
+50%{transform:scale(1.25);}
+}
 
-        .step {
-            background: #1a1d27;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border-left: 4px solid #4fc3f7;
-        }
+.spin{
+font-size:70px;
+animation:spin 2s linear infinite;
+}
 
-        .step h3 {
-            color: #4fc3f7;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
 
-        .step p {
-            line-height: 1.6;
-            white-space: pre-wrap;
-            font-size: 0.95rem;
-        }
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+top:-10px;
+animation:fall linear forwards;
+}
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #888;
-        }
-
-        .error {
-            background: #2d1a1a;
-            border-left: 4px solid #ef5350;
-            border-radius: 10px;
-            padding: 20px;
-            color: #ef5350;
-        }
-
-        .confidence { margin-bottom: 10px; font-size: 0.8rem; color: #888; }
-        .confidence span { color: #4fc3f7; font-weight: bold; }
-        .bar { background: #333; border-radius: 4px; height: 4px; margin-top: 4px; }
-        .fill { background: #4fc3f7; height: 4px; border-radius: 4px; transition: width 0.3s; }
-    </style>
+@keyframes fall{
+to{transform:translateY(110vh) rotate(720deg);}
+}
+</style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>⚖️ NyayBot</h1>
-        <p class="subtitle">Upload any government or legal document — or describe your problem for RTI guidance.</p>
 
-        <!-- Tab switcher -->
-        <div class="tabs">
-            <div class="tab active" id="tabDoc" onclick="switchTab('doc')">📄 Document Analysis</div>
-            <div class="tab" id="tabRti" onclick="switchTab('rti')">📝 RTI Assistant</div>
-        </div>
+<div class="container" id="mainContent">
+<div class="bear">🐻</div>
+<h1>Will You Be My Valentine, Tanuja?</h1>
+<div class="subtitle">Valentine’s Day is cute… but loving you daily is my real full-time job...</div>
+<div class="closing">Every love story is beautiful, but ours is my favorite</div>
 
-        <!-- Document Analysis Panel -->
-        <div class="panel active" id="panelDoc">
-            <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-                <p id="uploadText">📄 Click to upload PDF</p>
-            </div>
-            <input type="file" id="fileInput" accept=".pdf" onchange="handleFile(event)">
-            <button class="btn" id="analyzeBtn" onclick="analyze()" disabled>Analyze Document</button>
-            <div id="docOutput" class="steps"></div>
-        </div>
+<div class="buttons">
+<button id="yesBtn">Yes 💖</button>
+<button id="noBtn">No</button>
+</div>
+</div>
 
-        <!-- RTI Assistant Panel -->
-        <div class="panel" id="panelRti">
-            <textarea class="rti-input" id="rtiProblem" placeholder="Describe your problem or grievance here...&#10;&#10;Example: I want to know how much money was spent by my local municipality on road construction in 2024-25."></textarea>
-            <button class="btn" id="rtiBtn" onclick="analyzeRti()">Analyze RTI Options</button>
-            <div id="rtiOutput" class="steps"></div>
-        </div>
-    </div>
+<div class="celebration" id="celebration">
+<h2>Yayyyy!!</h2>
+<div class="spin">💘</div>
+<p style="margin-top:20px;font-size:22px;">
+Careful… I take this boyfriend job very seriously....
+</p>
+</div>
 
-    <script>
-        /* ── Tab switching ──────────────────────────────── */
-        function switchTab(tab) {
-            document.getElementById('tabDoc').classList.toggle('active', tab === 'doc');
-            document.getElementById('tabRti').classList.toggle('active', tab === 'rti');
-            document.getElementById('panelDoc').classList.toggle('active', tab === 'doc');
-            document.getElementById('panelRti').classList.toggle('active', tab === 'rti');
-        }
+<script>
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const celebration=document.getElementById("celebration");
+const mainContent=document.getElementById("mainContent");
 
-        /* ── Shared step renderer ───────────────────────── */
-        function renderSteps(steps, container) {
-            container.innerHTML = '';
-            for (const step of steps) {
-                const confidenceBar = step.confidence ?
-                    `<div class="confidence">Confidence: <span>${step.confidence}%</span>
-                     <div class="bar"><div class="fill" style="width:${step.confidence}%"></div></div></div>` : '';
-                container.innerHTML += `
-                    <div class="step">
-                        <h3>${step.title}</h3>
-                        ${confidenceBar}
-                        <p>${step.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
-                    </div>`;
-            }
-        }
+const messages=[
+"Nope, not an option!",
+"Try again!",
+"You sure about that?",
+"Not happening!",
+"Think again!"
+];
 
-        /* ── Document Analysis ──────────────────────────── */
-        let selectedFile = null;
+let msgIndex=0;
 
-        function handleFile(e) {
-            selectedFile = e.target.files[0];
-            document.getElementById('uploadText').textContent = '✅ ' + selectedFile.name;
-            document.getElementById('analyzeBtn').disabled = false;
-        }
+function moveNoButton(){
+const yesRect=yesBtn.getBoundingClientRect();
+let x,y;
+const padding=120;
 
-        async function analyze() {
-            if (!selectedFile) return;
-            const btn = document.getElementById('analyzeBtn');
-            const output = document.getElementById('docOutput');
-            btn.disabled = true;
-            output.innerHTML = '<div class="loading">🔄 Analyzing document... this may take 30-60 seconds</div>';
+do{
+x=Math.random()*(window.innerWidth-120);
+y=Math.random()*(window.innerHeight-60);
+}while(
+x>yesRect.left-padding &&
+x<yesRect.right+padding &&
+y>yesRect.top-padding &&
+y<yesRect.bottom+padding
+);
 
-            const formData = new FormData();
-            formData.append('file', selectedFile);
+noBtn.style.position="fixed";
+noBtn.style.left=x+"px";
+noBtn.style.top=y+"px";
 
-            try {
-                const res = await fetch('/api/v1/analyze', { method: 'POST', body: formData });
-                const data = await res.json();
+noBtn.textContent=messages[msgIndex];
+msgIndex=(msgIndex+1)%messages.length;
+}
 
-                if (data.error) {
-                    output.innerHTML = `<div class="error">❌ ${data.error}</div>`;
-                    return;
-                }
+noBtn.addEventListener("click",moveNoButton);
+noBtn.addEventListener("mouseover",moveNoButton);
+noBtn.addEventListener("touchstart",moveNoButton);
 
-                renderSteps(data.steps, output);
-            } catch (err) {
-                output.innerHTML = `<div class="error">❌ Server error: ${err.message}</div>`;
-            } finally {
-                btn.disabled = false;
-            }
-        }
+yesBtn.addEventListener("click",()=>{
+mainContent.style.display="none";
+stopHearts();
+celebration.style.display="flex";
+createConfetti();
+});
 
-        /* ── RTI Analysis ───────────────────────────────── */
-        async function analyzeRti() {
-            const problem = document.getElementById('rtiProblem').value.trim();
-            if (!problem) return;
-            const btn = document.getElementById('rtiBtn');
-            const output = document.getElementById('rtiOutput');
-            btn.disabled = true;
-            output.innerHTML = '<div class="loading">🔄 Analyzing RTI options... this may take 30-60 seconds</div>';
+function createHeart(){
+const heart=document.createElement("div");
+heart.className="floating-heart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*25+15)+"px";
+heart.style.animationDuration=(Math.random()*5+5)+"s";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),10000);
+}
 
-            try {
-                const res = await fetch('/api/v1/rti', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ problem: problem })
-                });
-                const data = await res.json();
+let heartInterval=setInterval(()=>{
+if(document.querySelectorAll(".floating-heart").length<15){
+createHeart();
+}
+},400);
 
-                if (data.error) {
-                    output.innerHTML = `<div class="error">❌ ${data.error}</div>`;
-                    return;
-                }
+function stopHearts(){
+clearInterval(heartInterval);
+document.querySelectorAll(".floating-heart").forEach(h=>h.remove());
+}
 
-                renderSteps(data.steps, output);
-            } catch (err) {
-                output.innerHTML = `<div class="error">❌ Server error: ${err.message}</div>`;
-            } finally {
-                btn.disabled = false;
-            }
-        }
-    </script>
+function createConfetti(){
+for(let i=0;i<120;i++){
+const conf=document.createElement("div");
+conf.className="confetti";
+conf.style.left=Math.random()*100+"vw";
+conf.style.backgroundColor=`hsl(${Math.random()*360},100%,50%)`;
+conf.style.animationDuration=(Math.random()*3+2)+"s";
+conf.style.width=conf.style.height=(Math.random()*8+4)+"px";
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),5000);
+}
+}
+</script>
+
 </body>
-
 </html>
+```

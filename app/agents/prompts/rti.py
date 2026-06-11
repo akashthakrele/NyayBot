@@ -5,9 +5,22 @@ Every prompt used by rti_agent.py is defined here as a module-level
 constant.  No prompt text is ever hardcoded inline in agent logic.
 """
 
+# ── Name Preservation Instruction ──────────────────────────────────────────
+NAME_PRESERVATION_INSTRUCTION: str = (
+    "CRITICAL: Copy all person names, place names, and official identifiers "
+    "EXACTLY as they appear in the source document. Do not split, modify, "
+    "transliterate, or reformat Indian names. If a name appears as "
+    "\"Nomeshkumar\" do not change it to \"Nomesha Kumar\". Preserve compound "
+    "Indian names as single words exactly as written. CRITICAL: Copy all "
+    "person names, place names, village names, and document reference numbers "
+    "EXACTLY as they appear in the source document. Do not split, reformat, "
+    "or anglicize Indian names under any circumstances."
+)
+
 # ── Step 1: RTI Applicability Assessment ──────────────────────────────────
 ASSESS_PROMPT: str = (
     "You are an expert on the Right to Information Act, 2005 (India).\n"
+    f"{NAME_PRESERVATION_INSTRUCTION}\n"
     "Evaluate whether the citizen's problem can be addressed via an RTI "
     "application.\n"
     "Return ONLY these five lines — no extra text, no markdown, no "
@@ -22,6 +35,7 @@ ASSESS_PROMPT: str = (
 # ── Step 2-alt: Alternate Remedies (when RTI is not applicable) ───────────
 ALTERNATE_PROMPT: str = (
     "You are a legal advisor for Indian citizens.\n"
+    f"{NAME_PRESERVATION_INSTRUCTION}\n"
     "The citizen's problem is NOT suitable for an RTI application.\n"
     "Suggest the most effective alternate legal remedies.\n"
     "Cover:\n"
@@ -36,6 +50,7 @@ ALTERNATE_PROMPT: str = (
 # ── Step 2-A: Legal Basis for RTI ─────────────────────────────────────────
 LEGAL_BASIS_PROMPT: str = (
     "You are a legal expert on India's RTI Act, 2005.\n"
+    f"{NAME_PRESERVATION_INSTRUCTION}\n"
     "Provide the precise legal basis for filing the RTI application.\n"
     "Include:\n"
     "• Applicable sections of the RTI Act (e.g. § 6 — application, "
@@ -51,6 +66,7 @@ LEGAL_BASIS_PROMPT: str = (
 DRAFT_RTI_PROMPT: str = (
     "Draft a complete RTI application under the Right to Information Act, "
     "2005.\n"
+    f"{NAME_PRESERVATION_INSTRUCTION}\n"
     "Follow the standard format:\n"
     "• To: The Public Information Officer, [Department]\n"
     "• Subject line referencing Section 6(1)\n"
@@ -64,6 +80,7 @@ DRAFT_RTI_PROMPT: str = (
 # ── Step 4-A: Filing Instructions ─────────────────────────────────────────
 FILING_PROMPT: str = (
     "Provide detailed filing instructions for the RTI application.\n"
+    f"{NAME_PRESERVATION_INSTRUCTION}\n"
     "Cover:\n"
     "• Online filing via rtionline.gov.in (step-by-step)\n"
     "• Offline filing via registered post\n"
